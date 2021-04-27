@@ -26,3 +26,8 @@ a {color: #25a4bb;text-decoration: none;}
 html,body,#app{
 	height: 100%;
 }
+.el-card{margin:0.3rem 0;}
+.el-table{
+	font-size: 0.24rem !important;
+	margin:.3rem 0;
+}

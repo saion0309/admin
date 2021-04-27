@@ -22,6 +22,7 @@
 					:collapse="isCollapse"
 					:collapse-transition="false"
 					text-color="#fff"
+					:default-active="activePath"
 					>
 						<el-submenu 
 						:index="item.id+''" 
@@ -34,7 +35,7 @@
 							</template>
 							<el-menu-item-group v-for="citem in item.children" :key="citem.id">
 								
-								<el-menu-item :index="citem.path">
+								<el-menu-item :index="citem.path" @click='menuItem'>
 									<i class="el-icon-menu"></i>
 									<span slot='title'>{{citem.authName}}</span>
 								</el-menu-item>
@@ -59,21 +60,34 @@
 		name: 'Home',
 		data() {
 			return {
+				//左侧菜单
 				menusList: [],
+				//是否展开
 				isCollapse:false,
+				//字体图标
 				iconObj:{
 					125:'el-icon-user-solid',
 					103:'el-icon-warning',
 					101:'el-icon-s-goods',
 					102:'el-icon-s-order',
 					145:'el-icon-s-platform'
-				}
+				},
+				//默认活动样式
+				activePath:''
 			}
 		},
 		created() {
+			this.activePath = sessionStorage.getItem("activePath")
 			this.getMenusList()
 		},
 		methods: {
+			//点击菜单每一项
+			menuItem(){
+				//将当前活动的那一项 存入本地存储
+				sessionStorage.setItem("activePath",path)
+				//默认活动的那一项 
+				this.activePath = path
+			},
 			//登出
 			Logiout(){
 				//清除本地存储
@@ -156,7 +170,9 @@
 				}
 			}
 
-			.el-main {}
+			.el-main {
+				background-color: rgba(234,237,241,1);
+			}
 		}
 
 	}

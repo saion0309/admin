@@ -63,6 +63,10 @@
 				} //校验规则
 			}
 		},
+		created() {
+			this.userInfo.username = 'admin'
+			this.userInfo.password = '123456'
+		},
 		methods: {
 			...mapMutations(["changeUserInfo"]),
 			//重置按钮
