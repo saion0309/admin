@@ -14,7 +14,7 @@
 					<el-input placeholder="请输入内容" v-model="usersParams.query" class="input-with-select" clearable
 						@clear="clearKey">
 						<el-button slot="append" icon="el-icon-search" @click="searchClick"
-						:disabled="usersParams.query.length <= 0"></el-button>
+							:disabled="usersParams.query.length <= 0"></el-button>
 					</el-input>
 				</el-col>
 				<el-col :span="4">
@@ -40,11 +40,14 @@
 					</template>
 				</el-table-column>
 				<el-table-column label="操作">
-					<template #default = "{row}">
+					<template #default="{row}">
 						<div class="cell-btns">
-							<el-button type="primary" icon="el-icon-edit" size="mini" @click="editUsers(row)"></el-button>
-							<el-button type="danger" icon="el-icon-delete" size="mini" @click="delUsers(row)"></el-button>
-							<el-button type="warning" icon="el-icon-setting" size="mini" @click="settingUsersState(row)"></el-button>
+							<el-button type="primary" icon="el-icon-edit" size="mini" @click="editUsers(row)">
+							</el-button>
+							<el-button type="danger" icon="el-icon-delete" size="mini" @click="delUsers(row)">
+							</el-button>
+							<el-button type="warning" icon="el-icon-setting" size="mini"
+								@click="settingUsersState(row)"></el-button>
 						</div>
 					</template>
 				</el-table-column>
@@ -56,22 +59,29 @@
 				layout="total, sizes, prev, pager, next, jumper" :total="totalPage">
 			</el-pagination>
 		</el-card>
-		
+
 		<!-- diglog 弹出框 -->
-		<users-dialog ref="dialog" :currentUsersInfo="currentUsersInfo" @clearChangeUsersInfo="clearChangeUsersInfo"></users-dialog>
+		<users-dialog ref="dialog" :currentUsersInfo="currentUsersInfo" @clearChangeUsersInfo="clearChangeUsersInfo">
+		</users-dialog>
+		<set-users ref="setUsers" :setUsersVal='setUsersVal' :rolesList= "rolesList"></set-users>
 	</div>
 </template>
 
 <script>
-	import UsersDialog from './chirden/UsersDialog.vue'
+	import UsersDialog from './chirdren/UsersDialog.vue'
+	import SetUsers from './chirdren/SetUsers.vue'
 	import {
 		reqUsers,
 		reqUpdateUsersState,
-		reqDelUsers
+		reqDelUsers,
+		reqRoles
 	} from 'network/api'
 	export default {
 		name: 'Users',
-		components:{UsersDialog},
+		components: {
+			UsersDialog,
+			SetUsers
+		},
 		data() {
 			return {
 				//用户列表
@@ -85,42 +95,64 @@
 				//多少条数据
 				totalPage: 0,
 				//当前用户信息
-				currentUsersInfo:{}
+				currentUsersInfo: {},
+				//设定角色
+				setUsersVal: {},
+				rolesList: []
 			}
 		},
 		created() {
 			this.getUsers()
 		},
 		methods: {
-			
+			//获取角色列表
+			async getRolesList() {
+				const {
+					meta,
+					data
+				} = await reqRoles()
+				if (meta.status !== 200) return this.$message.error(meta.msg)
+				this.rolesList = data
+			},
 			//设置用户状态
-			settingUsersState(row){
-				
+			settingUsersState(row) {
+				this.getRolesList()
+				this.setUsersVal = row
+				this.$refs.setUsers.dialogVisible = true
 			},
 			//点击按钮 删除 当前的用户数据
-			async delUsers(row){
-				const {id} = row
-			const {meta} =	await reqDelUsers(id)
-			if(meta.status !== 200 ) return this.$message.error(meta.msg)
-			this.$message.success(meta.msg)
-			//删除一页当中一条数据 应该让请求页数回到第一页
-			this.usersParams.pagenum = 1
-			this.getUsers()
+			async delUsers(row) {
+				const {
+					id
+				} = row
+				const {
+					meta
+				} = await reqDelUsers(id)
+				if (meta.status !== 200) return this.$message.error(meta.msg)
+				this.$message.success(meta.msg)
+				//删除一页当中一条数据 应该让请求页数回到第一页
+				this.usersParams.pagenum = 1
+				this.getUsers()
 			},
 			//改变用户的状态
-			async changeUsersState(row){
-				const {id:uid,mg_state:type} = row
-				const {meta} = await reqUpdateUsersState(uid,type)
-				if(meta.status !== 200 ) return this.$message.error(meta.msg)
+			async changeUsersState(row) {
+				const {
+					id: uid,
+					mg_state: type
+				} = row
+				const {
+					meta
+				} = await reqUpdateUsersState(uid, type)
+				if (meta.status !== 200) return this.$message.error(meta.msg)
 				this.$message.success(meta.msg)
 				this.getUsers()
 			},
 			//更改当前用户 解决 dialog编辑用户点击多次数据为空的问题
-			clearChangeUsersInfo(){
-				this.currentUsersInfo ={}
+			clearChangeUsersInfo() {
+				this.currentUsersInfo = {}
 			},
 			//编辑用户
-			editUsers(row){
+			editUsers(row) {
 				//row 当前用户的所有参数
 				this.currentUsersInfo = row
 				this.$refs.dialog.dialogVisible = true
@@ -128,9 +160,9 @@
 			//添加用户
 			addUsers() {
 				// this.$message.success("1")
-				this.currentUsersInfo ={}
+				this.currentUsersInfo = {}
 				this.$refs.dialog.dialogVisible = true
-				
+
 			},
 			//清除关键字
 			clearKey() {

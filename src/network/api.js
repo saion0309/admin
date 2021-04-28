@@ -23,6 +23,23 @@ export const reqUpdateUsersState = (uId,type) => request({url:`users/${uId}/stat
 export const reqDelUsers = (id) => request({url:`users/${id}`,method:'delete'})
 
 
+//角色列表 roles
+export const reqRoles = () => request({url:`roles`})
+
+//分配用户角色 users/:id/role
+export const reqUsersRoles = (id,rid) => request({url:`users/${id}/role`,method:'put',data:{rid}})
 
 //获取权限列表 rights/:type
 export const reqGetRights = (type) => request({url:`rights/${type}`})
+
+//添加角色 roles
+export const reqAddRoles = (data) => request({url:`roles`,method:'post',data})
+
+//添加角色 roles/:id
+export const reqEditRoles = (id,data) => request({url:`roles/${id}`,method:'put',data})
+
+//删除角色 roles/:id
+export const reqDelRoles = (id) => request({url:`roles/${id}`,method:'delete'})
+
+//删除角色指定权限 roles/:roleId/rights/:rightId
+export const reqDelUsersRights = (roleId,rightId) => request({url:`roles/${roleId}/rights/${rightId}`,method:'delete'})

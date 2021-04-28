@@ -3,18 +3,6 @@
 		<el-dialog :title="isEdit ?'编辑用户':'添加用户'" :visible.sync="dialogVisible" width="50%" :before-close="handleClose"
 			:close-on-click-modal="false">
 			<el-form :model="dialogForm" ref="dialogForm" :rules="formRules">
-				<!-- <el-form-item label="用户名">
-					<el-input v-model="username"></el-input>
-				</el-form-item>
-				<el-form-item label="密码">
-					<el-input v-model="password"></el-input>
-				</el-form-item>
-				<el-form-item label="邮箱">
-					<el-input v-model="email"></el-input>
-				</el-form-item>
-				<el-form-item label="手机号">
-					<el-input v-model="mobile"></el-input>
-				</el-form-item> -->
 				<el-form-item prop="username">
 					<el-input placeholder="请输入用户名"  v-model="dialogForm.username" :disabled="isEdit">
 						<i slot="prefix" class="el-input__icon el-icon-user"></i>
