@@ -43,3 +43,23 @@ export const reqDelRoles = (id) => request({url:`roles/${id}`,method:'delete'})
 
 //删除角色指定权限 roles/:roleId/rights/:rightId
 export const reqDelUsersRights = (roleId,rightId) => request({url:`roles/${roleId}/rights/${rightId}`,method:'delete'})
+
+//商品列表数据 goods
+export const reqGoods = (params) => request({url:`goods`,params})
+
+//商品分类数据列表 categories
+export const reqCategories= () => request({url:`categories`,})
+
+
+
+
+
+
+
+
+
+
+
+
+//请求 数据统计 reports/type/1
+export const reqReports = () => request({url:`reports/type/1`})

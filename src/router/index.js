@@ -35,7 +35,7 @@ const routes = [{
 			},
 			{
 				path: '/users',
-				name:'Users',
+				name: 'Users',
 				component: Users
 			},
 			{
@@ -51,7 +51,12 @@ const routes = [{
 			{
 				path: '/goods',
 				component: Goods,
-				name: 'Goods'
+				name: 'Goods',
+				children: [{
+					path: '/add',
+					component:() => import('views/goods/add/Add'),
+					name: 'Add'
+				}]
 			},
 			{
 				path: '/params',
