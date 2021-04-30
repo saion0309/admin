@@ -32,7 +32,7 @@
 						<el-input v-model="productNum" type="number"></el-input>
 					</el-form-item>
 					<el-form-item label="商品分类" prop="productCate">
-						<el-cascader change-on-select v-model="productClass.cat_id" :options="productClass"
+						<el-cascader  v-model="productClass.cat_id" :options="productClass"
 							:props="defaultParams"></el-cascader>
 					</el-form-item>
 				</el-tab-pane>
